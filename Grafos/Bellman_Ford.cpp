@@ -23,7 +23,7 @@ struct Grafo{
 
     void ae(int a, int b, int c){ edges.push_back({a, b, c}); }
 
-    void Bellman_Ford(int x){
+    void bellman_ford(int x){
         dist.assign(V, INF);
 
         dist[x] = 0;
@@ -58,7 +58,7 @@ int main() {
         g.ae(b, a, c);
     }
 
-    g.Bellman_Ford(0);
+    g.bellman_ford(0);
     for(int k = 0; k < n; k++){
         cout << "0 -> " << k << ": " << g.dist[k] << "\n";
     }
