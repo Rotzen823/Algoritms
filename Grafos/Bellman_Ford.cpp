@@ -6,15 +6,15 @@ using namespace std;
 typedef pair<int, int> ii;
 typedef vector<int> vi;
 
-typedef struct Edges{
+typedef struct Edge{
     int a;
     int b;
     int c;
-}Edges;
+}Edge;
 
 struct Grafo{
     int V;
-    vector<Edges> edges;
+    vector<Edge> edges;
     vi dist;
 
     void init(int _V){
