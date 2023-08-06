@@ -117,7 +117,6 @@ int main() {
     while(m--){
         int a, b;
         cin >> a >> b;
-        a--; b--;
         g.ae(a, b);
         g.ae(b, a);
     }
@@ -131,9 +130,9 @@ int main() {
             cout << "Camino de Euler:\n";
             g.path.pop_back();
         }
-        cout << g.path[0] + 1;
+        cout << g.path[0];
         for(int i = 1; i < (int) g.path.size(); i++){
-            cout << " " << g.path[i] + 1;
+            cout << " " << g.path[i];
         }
         cout << "\n";
     }
