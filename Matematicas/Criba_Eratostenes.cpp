@@ -5,7 +5,7 @@ using namespace std;
 vector<bool> esPrimo;
  
 void criba(int n){
-    esPrimo.assign(n, true);
+    esPrimo.assign(n + 1, true);
 
     esPrimo[0] = esPrimo[1] = false;
 
