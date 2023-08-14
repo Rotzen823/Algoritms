@@ -7,10 +7,11 @@ typedef pair<int, int> ii;
 
 struct Grafo{
     int V, st, end;
+    struct Edge { int to; bool used; };
     vector<vi> adj;
+    vector<Edge> edges;
     vector<bool> ready;
     vi path;
-    multiset<ii> edges;
 
     void init(int _V){
         V = _V;
@@ -20,8 +21,8 @@ struct Grafo{
     }
 
     void ae(int a, int b){ 
-        adj[a].push_back(b);
-        edges.insert(ii(a, b)); 
+        adj[a].push_back(edges.size()); edges.push_back({b, false});
+        adj[b].push_back(edges.size()); edges.push_back({a, false}); 
     }
 
     void dfs(int u){
@@ -30,8 +31,8 @@ struct Grafo{
         }
         ready[u] = true;
 
-        for(int v : adj[u]){
-            dfs(v);
+        for(int e : adj[u]){
+            dfs(edges[e].to);
         }
     }
 
@@ -92,13 +93,13 @@ struct Grafo{
 
     void findEulerPath(int u){
         while(!adj[u].empty()){
-            int v = adj[u].back();
+            int e = adj[u].back();
             adj[u].pop_back();
-            if(!edges.count(ii(u, v))){
+            if(edges[e].used){
                 continue;
             }
-            edges.erase(edges.find(ii(u, v)));
-            edges.erase(edges.find(ii(v, u)));
+            int v = edges[e].to;
+            edges[e^1].used = true;
             findEulerPath(v);
         }
         path.push_back(u);
@@ -117,8 +118,8 @@ int main() {
     while(m--){
         int a, b;
         cin >> a >> b;
+        a--; b--;
         g.ae(a, b);
-        g.ae(b, a);
     }
 
     int ax = g.isEulerian();
