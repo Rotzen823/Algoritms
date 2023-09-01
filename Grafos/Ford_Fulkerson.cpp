@@ -1,5 +1,4 @@
 #include<bits/stdc++.h>
-#define MAX 35
 
 using namespace std;
 
@@ -52,10 +51,10 @@ int main() {
     for(int i = 0; i < m; i++){
         int a, b, c;
         cin >> a >> b >> c;
-        dinic.ae(a, b, c);
+        ff.ae(a, b, c);
     }   
 
-    cout << dinic.maxFlow(1, n) << "\n";
+    cout << ff.maxFlow(1, n) << "\n";
 
     return 0;
 }
