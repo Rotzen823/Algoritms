@@ -60,35 +60,33 @@ vi suffix_array_construction(string s) {
 
 vi suffix;
 string s;
+int n;
 
-int compare(string t, int i){
-    int n = t.length();
-    for(int k = 0; k < n; k++, i++){
-        if(i >= (int) s.length() || t[k] > s[i]){
-            return 1;
-        }
-        else if(t[k] < s[i]){
-            return -1;
-        }
-    }
-    return 0;
-}
-bool buscarSufijo(string t, vi suffix){
-    int st = 0, end = suffix.size() - 1;
-    while(st <= end){
-        int mid = (st + end) / 2;
-        int ax = compare(t, suffix[mid]);
-        if(ax == 0){
-            return true;
-        }
-        else if(ax < 0){
-            end = mid - 1;
-        }
-        else{
-            st = mid + 1;
-        }
-    }
-    return false;
+vi kasaiAlgo(){
+   vi lcp(n, 0), tmpSuf(n, 0);
+
+   for (int i = 0; i < n; i++)
+       tmpSuf[suffix[i]] = i;
+
+   int len = 0;
+
+   for (int i = 0; i < n; i++)
+   {
+       if (tmpSuf[i] == n - 1)
+       {
+           len = 0;
+           continue;
+       }
+
+       int idx = suffix[tmpSuf[i] + 1];
+       while (i + len < n && idx + len < n && s[i + len] == s[idx + len])
+           len++;
+       lcp[tmpSuf[i]] = len;
+       if (len > 0)
+           len--;
+   }
+
+   return lcp;
 }
 
 int main(){
@@ -96,19 +94,14 @@ int main(){
     cin.tie(0); cout.tie(0);
 
     cin >> s;
+    n = s.length();
 
     suffix = suffix_array_construction(s);
+    vi lcp = kasaiAlgo();
 
-    int m, res = 0;
-    cin >> m;
-
-    while(m--){
-        string t;
-        cin >> t;
-
-        if(buscarSufijo(t, suffix)){
-            res++;
-        }
+    int res = 0;
+    for(int k = 0; k < n; k++){
+        res = max(res, lcp[k]);
     }
 
     cout << res << "\n";
