@@ -4,7 +4,6 @@ using namespace std;
 typedef pair<int, int> ii;
 typedef vector<ii> vii;
 
-vii puntos;
 int sacarArea(vii &puntos){
     int n = puntos.size();
     int area = 0;
@@ -24,6 +23,7 @@ int main() {
     int n;
     cin >> n;
 
+    vii puntos;
     for(int k = 0; k < n; k++){
         int x, y;
         cin >> x >> y;
