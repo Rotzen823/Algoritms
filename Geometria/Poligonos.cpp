@@ -110,6 +110,21 @@ int insidePolygon(point pt, const vector<point> &P) {
     return fabs(sum) > PI ? 1 : -1;              // 360d->in, 0d->out
 }
 
+point circuncentro(const vector<point> &P){
+    point ans(0, 0);
+    double areaP = 6.0 * area(P);
+    cout << areaP << "\n";
+    for(int i = 0; i < (int)P.size()-1; i++){
+        double crossP = (P[i].x*P[i+1].y - P[i+1].x*P[i].y);
+        ans.x += (P[i].x + P[i + 1].x) * crossP;
+        ans.y += (P[i].y + P[i + 1].y) * crossP;
+    }
+    cout << ans.x << " " << ans.y << "\n";
+    ans.x /= areaP;
+    ans.y /= areaP;
+    return ans;
+}
+
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
