@@ -29,6 +29,12 @@ struct point {
     }
 };
 
+struct point_i {
+    int x, y;                              
+    point_i() { x = y = 0; }       
+    point_i(int _x, int _y) : x(_x), y(_y) {}  
+};
+
 double dist(point p1, point p2) {                // Euclidean distance
   // hypot(dx, dy) returns sqrt(dx*dx + dy*dy)
   return hypot(p1.x-p2.x, p1.y-p2.y);            // return double
@@ -184,6 +190,25 @@ bool ccw(point p, point q, point r) {
 // returns true if point r is on the same line as the line pq
 bool collinear(point p, point q, point r) {
     return fabs(cross(toVec(p, q), toVec(p, r))) < EPS;
+}
+
+//Ciruclos
+int insideCircle(point_i p, point_i c, int r) {  // all integer version
+    int dx = p.x-c.x, dy = p.y-c.y;
+    int Euc = dx*dx + dy*dy, rSq = r*r;            // all integer
+    return Euc < rSq ? 1 : Euc == rSq ? 0 : -1;    // inside/border/outside
+}
+
+bool circle2PtsRad(point p1, point p2, double r, point &c) {
+    // to get the other center, reverse p1 and p2
+    double d2 = (p1.x-p2.x) * (p1.x-p2.x) + 
+                (p1.y-p2.y) * (p1.y-p2.y);
+    double det = r*r / d2 - 0.25;
+    if (det < 0.0) return false;
+    double h = sqrt(det);
+    c.x = (p1.x+p2.x) * 0.5 + (p1.y-p2.y) * h;
+    c.y = (p1.y+p2.y) * 0.5 + (p2.x-p1.x) * h;
+    return true;
 }
 
 int main() {
