@@ -215,6 +215,7 @@ int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
+    cout.setf(ios::fixed); cout << setprecision(6);
 
     
     return 0;
