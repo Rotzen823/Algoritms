@@ -167,37 +167,15 @@ double distToLineSegment(point p, point a, point b, point &c) {
   return distToLine(p, a, b, c);                 // use distToLine
 }
 
-//Devuelve true si es que el segmento ab choca con el segmento cd
-bool intersectSegment(point a, point b, point c, point d){
-    double x1 = a.x, x2 = b.x, x3 = c.x, x4 = d.x;
-    double y1 = a.y, y2 = b.y, y3 = c.y, y4 = d.y;
-    line l1, l2;
+//Devuelve true si es que el segmento ab choca con el segmento pq
+bool segIntersects(point a, point b, point p, point q)
+{   
+	vec ab = toVec(a, b), pq = toVec(p, q);
+	vec A = toVec(point(0, 0), a), P = toVec(point(0, 0), p);
 
-    pointsToLine(a, b, l1);
-    pointsToLine(c, d, l2);
-
-    if(x1 > x2){
-        swap(x1, x2);
-    }
-    if(y1 > y2){
-        swap(y1, y2);
-    }
-    if(x3 > x4){
-        swap(x3, x4);
-    }
-    if(y3 > y4){
-        swap(y3, y4);
-    }
-
-    point p;
-    if(areSame(l1, l2)){
-        return !(x1 > x4 || x2 < x3 || y1 > y4 || y2 < y3);
-    }
-    else if(areIntersect(l1, l2, p)){
-        return p.x >= x1 && p.x <= x2 && p.y >= y1 && p.y <= y2 &&
-        p.x >= x3 && p.x <= x4 && p.y >= y3 && p.y <= y4;
-    }
-    return false;
+    double k1 = (cross(A, pq) - cross(P, pq)) / cross(pq, ab);
+    double k2 = (cross(A, ab) - cross(P, ab)) / cross(pq, ab);
+    return k1 >= 0 && k1 <= 1 && k2 >= 0 && k2 <= 1;
 }
 
 // compute the intersection point between line segment p-q and line A-B
@@ -216,15 +194,10 @@ double angle(const point &a, const point &o, const point &b) {
 
 //Devuelve el angulo de a respecto a la linea horizontal que pasa por o
 //Usado para Sweep Radain
-double angleComp(const point &o, const point &a){
-	point ref = o;
-	ref.x++;
-	double ang = angle(ref, o, a);
-	if(a.y < o.y){
-		ang = (2.0 * PI) - ang;
-	}
-
-	return ang;
+double polarAngle(point p1, point p2){
+	double x = p1.x - p2.x, y = p1.y - p2.y;
+    double a = atan2(y, x);
+    return a < 0 ? a + 2 * PI : a;
 }
 
 // note: to accept collinear points, we have to change the `> 0'
