@@ -8,7 +8,6 @@ using namespace std;
 
 typedef long long ll;
 typedef vector<int> vi;
-typedef pair<ll, ll> point;
 typedef pair<int, int> ii;
 typedef vector<ii> vii;
 
@@ -104,66 +103,22 @@ int main(){
 
     int n;
     cin >> n;
-    vector<point> puntos(n);
+
+    LiChaoTree lct(-inf, inf);
     for(int k = 0; k < n; k++){
-        cin >> puntos[k].fi >> puntos[k].se;
+        ll a, b;
+        cin >> a >> b;
+
+        lct.add_line({a, b});
     }
 
     int m;
     cin >> m;
-    vector<Line> lineas(m);
-
-    for(int k = 0; k < m; k++){
-        ll a, b;
-        cin >> a >> b;
-
-        lineas[k] = {-a, -b};
-    }
-
-    vii res(n, ii(0, m));
-    for(int k = 0; k < LOG; k++){
-        vii query;
-        for(int i = 0; i < n; i++){
-            if(res[i].fi == res[i].se) continue;
-            int mid = (res[i].fi + res[i].se) / 2;
-            query.push_back(ii(mid, i));
-        }
-
-        if(!query.size()) break;
-        sort(query.begin(), query.end());
-
-        LiChaoTree lct(-inf, inf);
-        int id = 0;
-
-        for(int i = 0; i < (int) query.size(); i++){
-            while(id <= query[i].fi && id < m){
-                lct.add_line(lineas[id]);
-                id++;              
-            }
-            
-            int idP = query[i].se;
-            if(puntos[idP].se < -lct.query(puntos[idP].fi)){
-                res[idP].se = query[i].fi;
-            }
-            else{
-                res[idP].fi = query[i].fi + 1;
-            }
-        }
-    }
-
-    vector<vi> ans(m);
-    for(int k = 0; k < n; k++){
-        if(res[k].fi < m){
-            ans[res[k].fi].push_back(k);
-        }
-    }
-
-    for(int k = 0; k < m; k++){
-        cout << ans[k].size();
-        for(int j : ans[k]){
-            cout << " " << j + 1;
-        }
-        cout << "\n";
+    while(m--){
+        int x;
+        cin >> x;
+        int y = lct.query(x);
+        cout << y << "\n";
     }
 
     return 0;
