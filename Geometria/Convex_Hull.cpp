@@ -63,6 +63,36 @@ vector<point> CH_Andrew(vector<point> &pts) {    // overall O(n log n)
     return H;
 }
 
+vector<point> CH_Graham(vector<point> &ptsOriginal) {    // overall O(n log n)
+    vector<point> pts(ptsOriginal);                        // copy all points
+    int n = (int)pts.size();
+    if (n <= 3) {                                          // point/line/triangle
+        if (!(pts[0] == pts[n-1])) pts.push_back(pts[0]);    // corner case
+        return pts;                                          // the CH is P itself
+    }
+
+    // first, find P0 = point with lowest Y and if tie: rightmost X
+    int P0 = min_element(pts.begin(), pts.end())-pts.begin();
+    swap(pts[0], pts[P0]);                             // swap P[P0] with P[0]
+
+    // second, sort points by angle around P0, O(n log n) for this sort
+    sort(++pts.begin(), pts.end(), [&](point a, point b) {
+        return ccw(pts[0], a, b);   // use P[0] as the pivot
+    });
+
+    // third, the ccw tests, although complex, it is just O(n)
+    vector<point> S({pts[n-1], pts[0], pts[1]});         // initial S
+    int i = 2;                                     // then, we check the rest
+    while (i < n) {                                // n > 3, O(n)
+        int j = (int)S.size()-1;
+        if (ccw(S[j-1], S[j], pts[i]))                 // CCW turn
+        S.push_back(pts[i++]);                       // accept this point
+        else                                         // CW turn
+        S.pop_back();                              // pop until a CCW turn
+    }
+    return S;                                      // return the result
+}
+
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
