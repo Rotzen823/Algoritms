@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#define MAX 500
  
 using namespace std;
 
@@ -8,9 +7,6 @@ typedef vector<int> vi;
 typedef pair<int, int> ii;
 typedef vector<ii> vii; 
 
-ll mat[MAX][MAX];
-
-//Complejidad O(n^3)
 template <typename T>
 struct hungarian{ // km
     int n;
@@ -28,7 +24,7 @@ struct hungarian{ // km
     queue<int> q;
     int org_n;
     int org_m;
-
+ 
     hungarian(int _n, int _m)
     {
         org_n = _n;
@@ -46,12 +42,12 @@ struct hungarian{ // km
         ly = vector<T>(n);
         slack = vector<T>(n);
     }
-
+ 
     void addEdge(int u, int v, T w)
     {
         g[u][v] = w; 
     }
-
+ 
     bool check(int v)
     {
         visy[v] = true;
@@ -68,7 +64,7 @@ struct hungarian{ // km
         }
         return true;
     }
-
+ 
     void bfs(int i)
     {
         while (!q.empty())
@@ -135,7 +131,7 @@ struct hungarian{ // km
             }
         }
     }
-
+ 
     T solve()
     {
         for (int i = 0; i < n; i++)
@@ -145,7 +141,7 @@ struct hungarian{ // km
                 lx[i] = max(lx[i], g[i][j]);
             }
         }
-
+ 
         for (int i = 0; i < n; i++)
         {
             fill(slack.begin(), slack.end(), inf);
@@ -153,10 +149,11 @@ struct hungarian{ // km
             fill(visy.begin(), visy.end(), false);
             bfs(i);
         }
-
+ 
         for (int i = 0; i < n; i++)
         {
-            if (g[i][matchx[i]] > 0)
+            //cout << g[i][matchx[i]] << "\n";
+            if (g[i][matchx[i]] < 0)
             {
                 res += g[i][matchx[i]];
             }
