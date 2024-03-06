@@ -1,29 +1,46 @@
 #include <bits/stdc++.h>
 #define MAX 100010
 using namespace std;
-string T, P;
-int b[MAX], n, m; 
-// b = tabla de reinicios // n = long. de T // m = long. de P 
-void kmpPreprocess(){ // Llamar antes de kmpSearch()
-    int i = 0, j = -1; b[0] = -1;  // Valores Iniciales
-    while(i < m){ //Proceso previo de cadena patrón P
-        while(j >= 0 && P[i] != P[j]) j = b[j]; //Diferente, reiniciar j
-        i++; j++; // Si es igual avanzamos ambos punteros
-        b[i] = j;
-    }
-}
 
-void kmpSearch(){ //Similar a kmpPreprocess(), pero sobre T
-    int i = 0, j = 0;   //Valores iniciales
-    while(i < n){ //Buscar en la cadena T
-        while(j >= 0 && T[i] != P[j]) j = b[j]; //Diferente, reiniciar j
-        i++; j++; //Si es igual avanzamos ambos punteros
-        if(j == m){
-            cout << "P se encontró en el index " << i - j << "\n";
-            j = b[j]; //Preparar j para la siguiente coincidencia
-        }
+struct KMP{
+    int N;
+    string P;
+    vi b;
+    int b[MAX], n, m; 
+
+    void init(string s){
+        P = s;
+        N = s.length();
+        b.assign(N + 1, 0);
+        kmpPreprocess();
     }
-}
+    
+    void kmpPreprocess(){ 
+        int i = 0, j = -1; b[0] = -1;  
+        while(i < N){ 
+            while(j >= 0 && P[i] != P[j]) j = b[j]; 
+            i++; j++; 
+            b[i] = j;
+        }
+    }   
+
+    //Retorna la primera aparición de P en T
+    //Regresa el indice de inicio.
+    //Retorna -1 en caso de que no exista.
+    int kmpSearch(string T){ 
+        int M = T.length();
+        int i = 0, j = 0;   
+        while(i < M){ 
+            while(j >= 0 && T[i] != P[j]) j = b[j]; 
+            i++; j++; 
+            if(j == N){
+                return i - j;
+                j = b[j];
+            }
+        }
+        return -1;
+    }
+};
 
 int main(){
 
