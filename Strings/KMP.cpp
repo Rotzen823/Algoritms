@@ -1,12 +1,11 @@
 #include <bits/stdc++.h>
-#define MAX 100010
+
 using namespace std;
 
 struct KMP{
     int N;
-    string P;
-    vi b;
-    int b[MAX], n, m; 
+    string P; //String a buscar
+    vi b; //Aqui se guarda el patron
 
     void init(string s){
         P = s;
@@ -15,6 +14,7 @@ struct KMP{
         kmpPreprocess();
     }
     
+    //Calculo del patron
     void kmpPreprocess(){ 
         int i = 0, j = -1; b[0] = -1;  
         while(i < N){ 
@@ -24,8 +24,7 @@ struct KMP{
         }
     }   
 
-    //Retorna la primera aparición de P en T
-    //Regresa el indice de inicio.
+    //Retorna el indice de la primera aparición de P en T
     //Retorna -1 en caso de que no exista.
     int kmpSearch(string T){ 
         int M = T.length();
@@ -47,12 +46,13 @@ int main(){
     ios::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
+    string P, T;
     cin >> P >> T;
-    m = P.length();
-    n = T.length();
 
-    kmpPreprocess();
-    kmpSearch();
+    KMP kmp;
+    kmp.init(P);
+
+    cout << kmp.kmpSearch(T) << "\n";
 
     return 0;
 }
